@@ -16,6 +16,7 @@ jobs:
     - run: dotnet pack --configuration Release
     - uses: actions/upload-artifact@v4
       with:
+        name: package
         if-no-files-found: error
         retention-days: 3
         path: bin/Release/*.nupkg
@@ -26,6 +27,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         id: path
+        with:
+          name: package
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -34,4 +37,4 @@ jobs:
 
       - name: Publish NuGet package
         run: |
-            dotnet nuget push ${{ steps.path.outputs.download-path }} --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push ${{ steps.path.outputs.download-path }}/package.nupkg --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
