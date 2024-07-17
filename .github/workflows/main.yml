@@ -37,4 +37,4 @@ jobs:
 
       - name: Publish NuGet package
         run: |
-            dotnet nuget push ${{ steps.path.outputs.download-path }}/package.nupkg --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push "${{ steps.path.outputs.download-path }}/*.nupkg" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
