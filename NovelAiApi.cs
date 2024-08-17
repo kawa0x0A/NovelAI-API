@@ -112,11 +112,6 @@ namespace NovelAI_API
             { ImageModelType.InpaintingFurryV3, "nai-diffusion-furry-3-inpainting" },
         };
 
-        private static uint GetRandomSeed()
-        {
-            return (uint)(Random.Shared.NextInt64(uint.MaxValue) + 1);
-        }
-
         private static string GenerateQualityIncludePrompt(ImageModelType imageModelType, string prompt)
         {
             return imageModelType switch
@@ -214,6 +209,11 @@ namespace NovelAI_API
             return await httpClient.SendAsync(request);
         }
 
+        public static uint GetRandomSeed()
+        {
+            return (uint)(Random.Shared.NextInt64(uint.MaxValue) + 1);
+        }
+
         public void SetApiKey(string apiKey)
         {
             ApiKey = apiKey;
@@ -235,7 +235,7 @@ namespace NovelAI_API
                 utf8JsonWriter.WriteString("sm", parameters.IsEnableSmea.ToString().ToLower());
                 utf8JsonWriter.WriteString("sm_dyn", parameters.IsEnableSmeaDyn.ToString().ToLower());
                 utf8JsonWriter.WriteString("noise_schedule", parameters.Noise.ToString().ToLower());
-                utf8JsonWriter.WriteString("seed", (parameters.Seed == RandomSeedValue) ? GetRandomSeed().ToString() : parameters.Seed.ToString());
+                utf8JsonWriter.WriteString("seed", parameters.Seed.ToString());
                 utf8JsonWriter.WriteString("negative_prompt", GeneratePresetNegativePrompt(imageModelType, prompt, parameters.NegativePromptPreset, negativePrompt));
                 utf8JsonWriter.WriteEndObject();
             });
