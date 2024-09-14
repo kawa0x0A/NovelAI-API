@@ -14,7 +14,7 @@ namespace NovelAI_API
         private const string BaseAddress = "https://api.novelai.net";
         private const string GenerateImageUrl = BaseAddress + "/ai/generate-image";
 
-        public const long RandomSeedValue = -1;
+        public const int RandomSeedValue = -1;
 
         private string ApiKey { get; set; } = string.Empty;
 
@@ -68,6 +68,7 @@ namespace NovelAI_API
         public enum NoiseType
         {
             Native,
+            Karras,
             Exponential,
             PolyExponential,
         }
@@ -88,7 +89,7 @@ namespace NovelAI_API
 
             public bool IsEnableSmeaDyn { get; init; } = false;
 
-            public long Seed { get; init; } = RandomSeedValue;
+            public uint Seed { get; init; } = 0;
 
             public bool IsEnableAddQualityPrompt { get; init; } = false;
 
