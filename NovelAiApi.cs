@@ -35,6 +35,48 @@ namespace NovelAI_API
             InpaintingFurryV3,
         }
 
+        public enum ImageResolutionType
+        {
+            SmallPortrait,
+            SmallLandscape,
+            SmallSquare,
+
+            NormalPortrait,
+            NormalLandscape,
+            NormalSquare,
+
+            LargePortrait,
+            LargeLandscape,
+            LargeSquare,
+
+            SmallPortraitV2,
+            SmallLandscapeV2,
+            SmallSquareV2,
+
+            NormalPortraitV2,
+            NormalLandscapeV2,
+            NormalSquareV2,
+
+            LargePortraitV2,
+            LargeLandscapeV2,
+            LargeSquareV2,
+
+            SmallPortraitV3,
+            SmallLandscapeV3,
+            SmallSquareV3,
+
+            NormalPortraitV3,
+            NormalLandscapeV3,
+            NormalSquareV3,
+
+            LargePortraitV3,
+            LargeLandscapeV3,
+            LargeSquareV3,
+
+            WallpaperPortrait,
+            WallpaperLandscape,
+        }
+
         public enum SamplerType
         {
             k_lms,
@@ -208,6 +250,43 @@ namespace NovelAI_API
             using var httpClient = httpClientFactory.CreateClient();
 
             return await httpClient.SendAsync(request);
+        }
+
+        public static (int width, int height) GetImageResolutionPixel(ImageResolutionType imageResolutionType)
+        {
+            return imageResolutionType switch
+            {
+                ImageResolutionType.SmallPortrait => (384, 640),
+                ImageResolutionType.SmallLandscape => (640, 384),
+                ImageResolutionType.SmallSquare => (512, 512),
+                ImageResolutionType.NormalPortrait => (512, 768),
+                ImageResolutionType.NormalLandscape => (768, 512),
+                ImageResolutionType.NormalSquare => (640, 640),
+                ImageResolutionType.LargePortrait => (512, 1024),
+                ImageResolutionType.LargeLandscape => (1024, 512),
+                ImageResolutionType.LargeSquare => (1024, 1024),
+                ImageResolutionType.SmallPortraitV2 => (512, 768),
+                ImageResolutionType.SmallLandscapeV2 => (768, 512),
+                ImageResolutionType.SmallSquareV2 => (640, 640),
+                ImageResolutionType.NormalPortraitV2 => (832, 1216),
+                ImageResolutionType.NormalLandscapeV2 => (1216, 832),
+                ImageResolutionType.NormalSquareV2 => (1024, 1024),
+                ImageResolutionType.LargePortraitV2 => (1024, 1536),
+                ImageResolutionType.LargeLandscapeV2 => (1536, 1024),
+                ImageResolutionType.LargeSquareV2 => (1472, 1472),
+                ImageResolutionType.SmallPortraitV3 => (512, 768),
+                ImageResolutionType.SmallLandscapeV3 => (768, 512),
+                ImageResolutionType.SmallSquareV3 => (640, 640),
+                ImageResolutionType.NormalPortraitV3 => (832, 1216),
+                ImageResolutionType.NormalLandscapeV3 => (1216, 832),
+                ImageResolutionType.NormalSquareV3 => (1024, 1024),
+                ImageResolutionType.LargePortraitV3 => (1024, 1536),
+                ImageResolutionType.LargeLandscapeV3 => (1536, 1024),
+                ImageResolutionType.LargeSquareV3 => (1472, 1472),
+                ImageResolutionType.WallpaperPortrait => (1088, 1920),
+                ImageResolutionType.WallpaperLandscape => (1920, 1088),
+                _ => (0, 0)
+            };
         }
 
         public static uint GetRandomSeed()
