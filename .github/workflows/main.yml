@@ -24,12 +24,25 @@ jobs:
   deploy:
     needs: create_nuget
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      
     steps:
       - uses: actions/download-artifact@v4
         id: path
         with:
           name: package.nupkg
 
+      - name: Get OIDC token
+        id: oidc
+        run: |
+          TOKEN=$(curl -sS \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=nuget.org" | jq -r .value)
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+          
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -37,4 +50,4 @@ jobs:
 
       - name: Publish NuGet package
         run: |
-            dotnet nuget push "${{ steps.path.outputs.download-path }}/*.nupkg" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push "${{ steps.path.outputs.download-path }}/*.nupkg" --api-key ${{ steps.oidc.outputs.token }} --source https://api.nuget.org/v3/index.json --skip-duplicate
